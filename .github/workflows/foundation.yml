@@ -15,3 +15,6 @@ jobs:
           python-version: '3.11'
       - run: pip install -r requirements.txt
       - run: python -m pytest -q
+      - run: docker build -t foundation:test .
+      - run: docker run --rm --read-only foundation:test python -c 'from main import app'
+      - run: GRAFANA_PASSWORD=validation-only docker compose -f compose.yaml -f compose.observability.yaml config --quiet

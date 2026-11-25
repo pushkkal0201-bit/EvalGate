@@ -1,8 +1,10 @@
 from fastapi import FastAPI
 from pydantic import BaseModel, Field
 from prometheus_client import make_asgi_app
+from runtime import configure_runtime
 
 app = FastAPI(title="EvalGate")
+configure_runtime(app)
 app.mount("/metrics", make_asgi_app())
 
 @app.get("/health")
@@ -54,3 +56,21 @@ class RegressionRequest(BaseModel):
 @app.post("/v1/regression")
 def compare(body: RegressionRequest):
     return regression(body.baseline,body.candidate,body.tolerance)
+
+
+from pydantic import FiniteFloat
+from intelligence import paired_bootstrap
+
+
+class BootstrapRequest(BaseModel):
+    baseline: list[FiniteFloat] = Field(min_length=1, max_length=1000)
+    candidate: list[FiniteFloat] = Field(min_length=1, max_length=1000)
+    samples: int = Field(default=2000, ge=100, le=10000)
+
+
+@app.post("/v1/regression/paired")
+def compare_paired(body: BootstrapRequest):
+    try:
+        return paired_bootstrap(body.baseline, body.candidate, samples=body.samples)
+    except ValueError as exc:
+        raise HTTPException(422, str(exc)) from exc
