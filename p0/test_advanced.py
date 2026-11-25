@@ -6,3 +6,7 @@ def test_similarity():
 
 def test_regression():
     assert not regression(.9,.8)["passed"]
+
+
+def test_large_finite_vectors():
+    assert abs(cosine_similarity([1.7e308, 1.7e308], [1.7e308, 1.7e308]) - 1) < 1e-12

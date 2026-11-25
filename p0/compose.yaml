@@ -1,5 +1,10 @@
 services:
   api:
     build: .
+    environment:
+      API_KEY: ${API_KEY:-}
+    security_opt:
+      - no-new-privileges:true
+    cap_drop: [ALL]
     ports:
       - '127.0.0.1:8000:8000'

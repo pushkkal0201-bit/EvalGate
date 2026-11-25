@@ -14,5 +14,7 @@ services:
     volumes:
       - grafana_data:/var/lib/grafana
       - ./grafana-datasource.yaml:/etc/grafana/provisioning/datasources/local.yaml:ro
+      - ./grafana-dashboards.yaml:/etc/grafana/provisioning/dashboards/api.yaml:ro
+      - ./grafana-dashboard.json:/var/lib/grafana/dashboards/api.json:ro
 volumes:
   grafana_data:

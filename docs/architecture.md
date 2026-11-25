@@ -22,3 +22,9 @@ Golden dataset regression and failed check. Run only in an isolated local test e
 - Document measured latency, limitations, and hardware requirements; label simulations separately.
 - README architecture, quick start, security boundaries and API examples.
 - Never commit credentials or fabricate benchmark results.
+
+## Implemented runtime
+
+The [service guide](../p0/README.md) documents the CPU runtime, API example, observability stack, and deployment.
+
+Paired bootstrap uses deterministic resampling and requires aligned examples. The API does not publish GitHub check statuses or invoke evaluation models.
